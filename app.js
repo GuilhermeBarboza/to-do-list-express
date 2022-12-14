@@ -1,5 +1,7 @@
 const express = require('express');
 const checklistRouter = require('./source/routes/checklist'); // importando
+require('./config/database');
+
 const app = express();
 
 // middleware
