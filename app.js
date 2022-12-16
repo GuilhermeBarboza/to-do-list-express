@@ -1,5 +1,10 @@
 const express = require('express');
+const path = require('path'); // identifica em qual diretório estamos
+
 const checklistRouter = require('./source/routes/checklist'); // importando
+const rootRouter = require('./source/routes/index'); // importando
+
+
 require('./config/database');
 
 const app = express();
@@ -7,8 +12,12 @@ const app = express();
 // middleware
 app.use(express.json()); // verifica se ao fazer uma chamada há algum json presente e se deve ser processado e deixar disponível no boby
 
+app.set('views', path.join(__dirname, 'source/views'));
+app.set('view engine', 'ejs'); // define que a view engine será o ejs
+
 // '/checklists' == todas as rotas que estão no checklistRouter serão derivadas do termo anterior
 app.use('/checklists',checklistRouter); // usando como se fosse um Middleware
+app.use('/', rootRouter);
 
 /*
 const log = (req, res, next) => {
