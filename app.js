@@ -12,6 +12,8 @@ const app = express();
 // middleware
 app.use(express.json()); // verifica se ao fazer uma chamada há algum json presente e se deve ser processado e deixar disponível no boby
 
+app.use(express.static(path.join(__dirname, 'public'))); // habilita o uso de arquivos estáticos
+
 app.set('views', path.join(__dirname, 'source/views'));
 app.set('view engine', 'ejs'); // define que a view engine será o ejs
 
