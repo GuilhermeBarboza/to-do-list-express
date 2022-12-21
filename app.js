@@ -2,7 +2,9 @@ const express = require('express');
 const path = require('path'); // identifica em qual diretório estamos
 
 const checklistRouter = require('./source/routes/checklist'); // importando
+const taskRouter = require('./source/routes/task');
 const rootRouter = require('./source/routes/index'); // importando
+const methodOverride = require('method-override');
 
 
 require('./config/database');
@@ -11,6 +13,8 @@ const app = express();
 
 // middleware
 app.use(express.json()); // verifica se ao fazer uma chamada há algum json presente e se deve ser processado e deixar disponível no boby
+app.use(express.urlencoded({extended: true})); // requisições via formulário
+app.use(methodOverride('_method', {methods: ['POST', 'GET']}));
 
 app.use(express.static(path.join(__dirname, 'public'))); // habilita o uso de arquivos estáticos
 
@@ -18,8 +22,12 @@ app.set('views', path.join(__dirname, 'source/views'));
 app.set('view engine', 'ejs'); // define que a view engine será o ejs
 
 // '/checklists' == todas as rotas que estão no checklistRouter serão derivadas do termo anterior
-app.use('/checklists',checklistRouter); // usando como se fosse um Middleware
+app.use('/checklists', checklistRouter); // usando como se fosse um Middleware
+app.use('/checklists', taskRouter.checklistDep); 
+
+
 app.use('/', rootRouter);
+
 
 /*
 const log = (req, res, next) => {
