@@ -14,7 +14,7 @@ const app = express();
 // middleware
 app.use(express.json()); // verifica se ao fazer uma chamada há algum json presente e se deve ser processado e deixar disponível no boby
 app.use(express.urlencoded({extended: true})); // requisições via formulário
-app.use(methodOverride('_method', {methods: ['POST', 'GET']}));
+app.use(methodOverride('_method', {methods: ['POST', 'GET', 'PUT']}));
 
 app.use(express.static(path.join(__dirname, 'public'))); // habilita o uso de arquivos estáticos
 
@@ -24,6 +24,7 @@ app.set('view engine', 'ejs'); // define que a view engine será o ejs
 // '/checklists' == todas as rotas que estão no checklistRouter serão derivadas do termo anterior
 app.use('/checklists', checklistRouter); // usando como se fosse um Middleware
 app.use('/checklists', taskRouter.checklistDep); 
+app.use('/tasks', taskRouter.simple);
 
 
 app.use('/', rootRouter);
